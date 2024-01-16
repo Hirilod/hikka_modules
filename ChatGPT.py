@@ -11,6 +11,7 @@
 
 __version__ = (1, 0, 0)
 
+
 import contextlib
 from openai import AsyncOpenAI
 import httpx
