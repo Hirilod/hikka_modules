@@ -8,7 +8,6 @@ class Test(loader.Module):
         'test': 'Выводит тестовое сообщение'
     }
     
-    def __init__(): ...
     
     @loader.command(ru_doc='Тест', en_doc='Test')
     async def test_comm(self, message: Message):
