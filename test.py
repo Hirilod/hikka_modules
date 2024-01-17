@@ -1,5 +1,5 @@
 from telethon.tl.types import Message
-from . import loader, utils
+from .. import loader, utils
 
 @loader.tds
 class Test(loader.Module):
