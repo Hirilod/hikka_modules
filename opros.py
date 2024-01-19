@@ -34,14 +34,15 @@ class Poll(loader.Module):
     }
     
     
-    @loader.command(ru_doc='Тест', en_doc='Test')
+    @loader.command(ru_doc='<reply> - создает опрос из победителей игры.')
     async def poll(self, message: Message):
         '''<reply> - создает опрос из победителей игры.'''
         args = utils.get_args_raw(message)
         if not args:
+            name = ''
             name_poll = 'Кто победитель'
         else:
-            await utils.answer(message, args)
+            name = ''
             name_poll = args
         reply = await message.get_reply_message()
         if not reply:
@@ -55,13 +56,13 @@ class Poll(loader.Module):
             i = 0
             for name, role in winners.items():
                 i += 1
-                polls.append(PollAnswer(f'{name} - {role}', str(i)))
+                polls.append(PollAnswer(f'{name} - {role}', bytes(i)))
 
             await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
                 id = random.randint(1, 9999999),
                 question=name_poll,
                 answers=polls
             )))
-        except:
-            await utils.answer(message, self.strings("no_answers"))
+        except Exception as e:
+            await utils.answer(message, polls)
         
