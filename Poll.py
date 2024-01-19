@@ -18,7 +18,7 @@ from telethon.tl.types import Message, InputMediaPoll, Poll, PollAnswer
 from .. import loader, utils
 import re
 @loader.tds
-class Poll(loader.Module):
+class Poll_winner(loader.Module):
     strings = {
         'name': 'Poll',
         'poll': '<reply> - создает опрос из победителей игры.',
@@ -48,21 +48,20 @@ class Poll(loader.Module):
         if not reply:
             await utils.answer(message, self.strings("no_reply"))
             return
-        try:
-            pattern = re.compile(r'\d+\.\s+(.+?)\s+-\s+(.+)')
-            matches = pattern.findall(reply.raw_text)
-            winners = {name: role for name, role in matches}
-            polls = []
-            i = 0
-            for name, role in winners.items():
-                i += 1
-                polls.append(PollAnswer(f'{name} - {role}', bytes(i)))
 
-            await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
-                id = random.randint(1, 9999999),
-                question=name_poll,
-                answers=polls
-            )))
-        except Exception as e:
-            await utils.answer(message, polls)
+        pattern = re.compile(r'\d+\.\s+(.+?)\s+-\s+(.+)')
+        matches = pattern.findall(reply.raw_text)
+        winners = {name: role for name, role in matches}
+        polls = []
+        i = 0
+        for name, role in winners.items():
+            i += 1
+            polls.append(PollAnswer(text=f'{name} - {role}', option=bytes(i)))
+
+        await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
+            id = 45,
+            question=name_poll,
+            answers=polls
+        )))
+    
         
