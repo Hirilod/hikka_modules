@@ -35,7 +35,7 @@ class Poll(loader.Module):
     
     
     @loader.command(ru_doc='Тест', en_doc='Test')
-    async def test_comm(self, message: Message):
+    async def poll(self, message: Message):
         '''<reply> - создает опрос из победителей игры.'''
         args = utils.get_args_raw(message)
         if not args:
