@@ -39,29 +39,28 @@ class Poll_winner(loader.Module):
         '''<reply> - создает опрос из победителей игры.'''
         args = utils.get_args_raw(message)
         if not args:
-            name = ''
-            name_poll = 'Кто победитель'
+            win = 'Кто победитель'
         else:
-            name = ''
-            name_poll = args
+            win = args
         reply = await message.get_reply_message()
         if not reply:
             await utils.answer(message, self.strings("no_reply"))
             return
+        try:
+            pattern = re.compile(r'\d+\.\s+(.+?)\s+-\s+(.+)')
+            matches = pattern.findall(reply.raw_text)
+            winners = {name: role for name, role in matches}
+            polls = []
+            i = 0
+            for name, role in winners.items():
+                i += 1
+                polls.append(PollAnswer(f'{name} - {role}', str(i)))
 
-        pattern = re.compile(r'\d+\.\s+(.+?)\s+-\s+(.+)')
-        matches = pattern.findall(reply.raw_text)
-        winners = {name: role for name, role in matches}
-        polls = []
-        i = 0
-        for name, role in winners.items():
-            i += 1
-            polls.append(PollAnswer(text=f'{name} - {role}', option=bytes(i)))
-
-        await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
-            id = 45,
-            question=name_poll,
-            answers=polls
-        )))
-    
+            await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
+                id = random.randint(1, 9999999),
+                question=win,
+                answers=polls
+            )))
+        except:
+            await utils.answer(message, self.strings("no_answers"))
         
