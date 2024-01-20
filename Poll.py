@@ -39,7 +39,7 @@ class Poll_winner(loader.Module):
     
     @loader.command(ru_doc='<reply> - создает опрос из победителей игры.')
     async def poll(self, message: Message):
-        '''<reply> - создает опрос из победителей игры.'''
+        '''<reply> [название опроса]/[номера игроков через пробел] - создает опрос из победителей игры.'''
         args = utils.get_args_raw(message)
         if not args:
             await utils.answer(message, self.strings("no_args"))
@@ -60,13 +60,13 @@ class Poll_winner(loader.Module):
             i = 0
             for player in players:
                 i += 1
-                polls.append(PollAnswer(f'{matches[int(player)-1][0]} - {matches[(player)-1][1]}', str(i)))
+                polls.append(PollAnswer(f'{matches[int(player)-1][0]} - {matches[int(player)-1][1]}', str(i)))
 
             await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
                 id = random.randint(1, 9999999),
                 question=win,
                 answers=polls
             )))
-        except:
+        except Exception as e:
             await utils.answer(message, self.strings("no_answers"))
         
