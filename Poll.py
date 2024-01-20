@@ -30,6 +30,10 @@ class Poll_winner(loader.Module):
             "<emoji document_id=5197183257367552085>😢</emoji> <b>В этом сообщении"
             " нету результатов.</b>"
         ),
+        "no_args": (
+            "<emoji document_id=5312526098750252863>🚫</emoji> <b>Не указаны"
+            " аргументы</b>"
+        ),
         
     }
     
@@ -39,22 +43,25 @@ class Poll_winner(loader.Module):
         '''<reply> - создает опрос из победителей игры.'''
         args = utils.get_args_raw(message)
         if not args:
-            win = 'Кто победитель'
-        else:
-            win = args
+            await utils.answer(message, self.strings("no_args"))
+            return
         reply = await message.get_reply_message()
         if not reply:
             await utils.answer(message, self.strings("no_reply"))
             return
+        
         try:
+            win  = args.split('/')[0]
+            players = (args.split('/')[1]).split(' ')
             pattern = re.compile(r'\d+\.\s+(.+?)\s+-\s+(.+)')
             matches = pattern.findall(reply.raw_text)
-            winners = {name: role for name, role in matches}
+            
+            # winners = {name: role for name, role in matches}
             polls = []
             i = 0
-            for name, role in winners.items():
+            for player in players:
                 i += 1
-                polls.append(PollAnswer(f'{name} - {role}', str(i)))
+                polls.append(PollAnswer(f'{matches[player-1][0]} - {matches[player-1][1]}', str(i)))
 
             await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
                 id = random.randint(1, 9999999),
