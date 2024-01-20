@@ -27,8 +27,7 @@ class Poll_winner(loader.Module):
             " результат игры!</b>"
         ),
         "no_answers": (
-            "<emoji document_id=5197183257367552085>😢</emoji> <b>В этом сообщении"
-            " нету результатов.</b>"
+            "<emoji document_id=5197183257367552085>😢</emoji> <b>Неверно введены данные.</b>"
         ),
         "no_args": (
             "<emoji document_id=5312526098750252863>🚫</emoji> <b>Не указаны"
@@ -61,7 +60,7 @@ class Poll_winner(loader.Module):
             i = 0
             for player in players:
                 i += 1
-                polls.append(PollAnswer(f'{matches[player-1][0]} - {matches[player-1][1]}', str(i)))
+                polls.append(PollAnswer(f'{matches[int(player)-1][0]} - {matches[(player)-1][1]}', str(i)))
 
             await utils.answer_file(message, file=InputMediaPoll(poll=Poll(
                 id = random.randint(1, 9999999),

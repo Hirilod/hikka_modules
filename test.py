@@ -26,7 +26,7 @@ matches = pattern.findall(text)
 print(matches)
 
 for i in ir:
-    print(f'{matches[i-1][0]} - {matches[i-1][1]}')
+    print(f'{matches[int(i)-1][0]} - {matches[int(i)-1][1]}')
 
 # Создаем словарь с именами пользователей и их ролями
 # winners = {name: role for name, role in matches}
