@@ -54,4 +54,4 @@ class FakeHackMod(loader.Module):
         owner_mention = f"@{me.username}" if getattr(me, "username", None) else (me.first_name or "владелец")
 
         await asyncio.sleep(1)
-        await msg.edit(f"{owner_mention}, фейковый взлом проведён успешно!")
+        await msg.edit(f"{owner_mention}, успешно взломан, попущен и выебан в анал")
